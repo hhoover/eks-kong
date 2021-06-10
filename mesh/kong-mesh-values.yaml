@@ -1,0 +1,46 @@
+kuma:
+  nameOverride: kong-mesh
+  # The default registry and tag to use for all Kuma images
+  global:
+    image:
+      registry: "docker.io/kong"
+      tag: "1.2.6"
+
+  controlPlane:
+    image:
+      repository: "kuma-cp"
+    secrets:
+      - Env: "KMESH_LICENSE_INLINE"
+        Secret: "kong-mesh-license"
+        Key: "license"
+    webhooks:
+      validator:
+        additionalRules: |
+          - apiGroups:
+              - kuma.io
+            apiVersions:
+              - v1alpha1
+            operations:
+              - CREATE
+              - UPDATE
+              - DELETE
+            resources:
+              - opapolicies
+      ownerReference:
+        additionalRules: |
+          - apiGroups:
+              - kuma.io
+            apiVersions:
+              - v1alpha1
+            operations:
+              - CREATE
+            resources:
+              - opapolicies
+  # Configuration for the kuma dataplane sidecar
+  dataPlane:
+    image:
+      repository: "kuma-dp"
+
+    # Configuration for the kuma init phase in the sidecar
+    initImage:
+      repository: "kuma-init"

@@ -1,0 +1,5 @@
+aws_profile = "default"
+dns_base_domain = "domain.com"
+kong_superuser_password = "CHANGEME"
+name_prefix = "some_name"
+cluster_name = "some name"

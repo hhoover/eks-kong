@@ -1,0 +1,49 @@
+image:
+  repository: kong/kong-gateway
+  tag: "2.4-alpine"
+podAnnotations:
+  kuma.io/gateway: enabled
+env:
+  database: "off"
+enterprise:
+  enabled: true
+  license_secret: kong-enterprise-license
+  vitals:
+    enabled: false
+  portal:
+    enabled: false
+  rbac:
+    enabled: false
+manager:
+  enabled: false
+portal:
+  enabled: false
+portalapi:
+  enabled: false
+ingressController:
+  enabled: true
+  installCRDs: false
+proxy:
+  enabled: true
+  type: LoadBalancer
+
+  http:
+    enabled: true
+    servicePort: 80
+    containerPort: 8000
+    parameters: []
+
+  tls:
+    enabled: true
+    servicePort: 443
+    overrideServiceTargetPort: 8000
+    containerPort: 8443
+    parameters:
+    - http2
+
+  stream: {}
+
+  ingress:
+    enabled: false
+    annotations: {}
+    path: /
