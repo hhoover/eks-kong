@@ -8,6 +8,8 @@ Also included: some post-terraform Kube manifests in `./post-manifests` to add o
 
 Assumes a Kong enterprise `license.json` file in `./gateway` and `./mesh` - you'll need two licenses (one for Gateway and one for Mesh)
 
+You'll need a domain that exists in Route53.
+
 ## Providers
 
 | Name | Version |
