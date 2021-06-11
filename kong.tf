@@ -44,6 +44,9 @@ resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
   }
+  annotations = {
+    "kuma.io/sidecar-injection" = "enabled"
+  }
 }
 
 resource "kubernetes_secret" "kong-enterprise-license" {
@@ -114,6 +117,9 @@ resource "aws_route53_record" "gateway_proxy" {
 resource "kubernetes_namespace" "kong-mesh-system" {
   metadata {
     name = "kong-mesh-system"
+  }
+  annotations = {
+    "kuma.io/sidecar-injection" = "enabled"
   }
 }
 
