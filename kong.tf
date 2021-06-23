@@ -43,9 +43,9 @@ resource "aws_acm_certificate_validation" "eks_domain_cert_validation" {
 resource "kubernetes_namespace" "kong" {
   metadata {
     name = "kong"
-  }
-  annotations = {
-    "kuma.io/sidecar-injection" = "enabled"
+    annotations = {
+      "kuma.io/sidecar-injection" = "enabled"
+    }
   }
 }
 
@@ -117,9 +117,9 @@ resource "aws_route53_record" "gateway_proxy" {
 resource "kubernetes_namespace" "kong-mesh-system" {
   metadata {
     name = "kong-mesh-system"
-  }
-  annotations = {
-    "kuma.io/sidecar-injection" = "enabled"
+    annotations = {
+      "kuma.io/sidecar-injection" = "enabled"
+    }
   }
 }
 

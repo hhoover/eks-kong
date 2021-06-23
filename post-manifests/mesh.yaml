@@ -3,6 +3,9 @@ kind: Mesh
 metadata:
   name: default
 spec:
+  networking:
+    outbound:
+      passthrough: false
   mtls:
     enabledBackend: ca-1
     backends:
