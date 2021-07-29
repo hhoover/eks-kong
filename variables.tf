@@ -103,7 +103,7 @@ variable "dns_base_domain" {
 
 variable "kong_gateway_chart_name" {
   type        = string
-  default     = "https://github.com/Kong/charts/releases/download/kong-2.1.0/kong-2.1.0.tgz"
+  default     = "https://github.com/Kong/charts/releases/download/kong-2.2.0/kong-2.2.0.tgz"
   description = "Ingress Gateway Helm chart name."
 }
 
