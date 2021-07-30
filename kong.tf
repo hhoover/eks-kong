@@ -120,6 +120,9 @@ resource "kubernetes_namespace" "kong-mesh-system" {
     annotations = {
       "kuma.io/sidecar-injection" = "enabled"
     }
+    labels = {
+      "kuma.io/system-namespace" = "true"
+    }
   }
 }
 
