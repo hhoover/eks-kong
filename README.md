@@ -61,7 +61,7 @@ You'll need a domain that exists in Route53.
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS profile to use from local AWS credentials file | `string` | `"default"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS Cluster | `string` | `"dev"` | no |
 | <a name="input_dns_base_domain"></a> [dns\_base\_domain](#input\_dns\_base\_domain) | DNS Zone name to be used for EKS Ingress. | `string` | n/a | yes |
-| <a name="input_kong_gateway_chart_name"></a> [kong\_gateway\_chart\_name](#input\_kong\_gateway\_chart\_name) | Ingress Gateway Helm chart name. | `string` | `"https://github.com/Kong/charts/releases/download/kong-2.1.0/kong-2.1.0.tgz"` | no |
+| <a name="input_kong_gateway_chart_name"></a> [kong\_gateway\_chart\_name](#input\_kong\_gateway\_chart\_name) | Ingress Gateway Helm chart name. | `string` | `"https://github.com/Kong/charts/releases/download/kong-2.2.0/kong-2.2.0.tgz"` | no |
 | <a name="input_kong_gateway_release_name"></a> [kong\_gateway\_release\_name](#input\_kong\_gateway\_release\_name) | Ingress Gateway Helm chart name. | `string` | `"kong"` | no |
 | <a name="input_kong_mesh_chart_name"></a> [kong\_mesh\_chart\_name](#input\_kong\_mesh\_chart\_name) | Kong Mesh Helm chart name. | `string` | `"kong-mesh"` | no |
 | <a name="input_kong_mesh_chart_repo"></a> [kong\_mesh\_chart\_repo](#input\_kong\_mesh\_chart\_repo) | Kong Mesh Helm repository name. | `string` | `"https://kong.github.io/kong-mesh-charts"` | no |
