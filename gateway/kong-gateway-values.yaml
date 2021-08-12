@@ -1,6 +1,6 @@
 image:
   repository: kong/kong-gateway
-  tag: "2.4-alpine"
+  tag: "2.5.0.0-alpine"
 podAnnotations:
   kuma.io/gateway: enabled
 env:

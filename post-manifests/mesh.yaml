@@ -5,7 +5,7 @@ metadata:
 spec:
   networking:
     outbound:
-      passthrough: false
+      passthrough: true
   mtls:
     enabledBackend: ca-1
     backends:
@@ -37,3 +37,11 @@ spec:
       sampling: 100.0
       conf:
         url: http://jaeger-collector.kuma-tracing:9411/api/v2/spans
+  logging:
+      defaultBackend: loki
+      backends:
+        - name: loki
+          type: file
+          conf:
+            path: /dev/stdout
+            address: loki.kuma-logging:3100
