@@ -49,7 +49,7 @@ variable "cluster_name" {
 
 variable "asg_instance_types" {
   type        = list(string)
-  default     = ["t3.small", "t2.small"]
+  default     = ["m5.xlarge", "m5.large"]
   description = "List of EC2 instance machine types to be used in EKS."
 }
 
@@ -61,7 +61,7 @@ variable "autoscaling_minimum_size_by_az" {
 
 variable "autoscaling_maximum_size_by_az" {
   type        = number
-  default     = 10
+  default     = 3
   description = "Maximum number of EC2 instances to autoscale our EKS cluster on each AZ."
 }
 
