@@ -85,7 +85,7 @@ variable "spot_termination_handler_chart_repo" {
 
 variable "spot_termination_handler_chart_version" {
   type        = string
-  default     = "0.15.0"
+  default     = "0.15.2"
   description = "EKS Spot termination handler Helm chart version."
 }
 

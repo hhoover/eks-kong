@@ -129,6 +129,8 @@ resource "helm_release" "spot_termination_handler" {
   repository = var.spot_termination_handler_chart_repo
   version    = var.spot_termination_handler_chart_version
   namespace  = var.spot_termination_handler_chart_namespace
+  recreate_pods = true
+  force_update = true
 }
 
 # add spot fleet Autoscaling policy
