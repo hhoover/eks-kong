@@ -77,10 +77,11 @@ locals {
   worker_groups_launch_template = [
     {
       override_instance_types = var.asg_instance_types
+      spot_instance_pools     = 2
       asg_desired_capacity    = var.autoscaling_minimum_size_by_az * length(data.aws_availability_zones.available.zone_ids)
       asg_min_size            = var.autoscaling_minimum_size_by_az * length(data.aws_availability_zones.available.zone_ids)
       asg_max_size            = var.autoscaling_maximum_size_by_az * length(data.aws_availability_zones.available.zone_ids)
-      kubelet_extra_args      = "--node-labels=node.kubernetes.io/lifecycle=spot" # use Spot EC2 instances to save some money and scale more
+      kubelet_extra_args      = "--node-labels=node.kubernetes.io/lifecycle=spot"
       public_ip               = true
     },
   ]
@@ -90,7 +91,7 @@ module "eks-cluster" {
   source           = "terraform-aws-modules/eks/aws"
   version          = "17.1.0"
   cluster_name     = var.cluster_name
-  cluster_version  = "1.20"
+  cluster_version  = "1.21"
   write_kubeconfig = false
 
   subnets = module.vpc.private_subnets
@@ -129,8 +130,6 @@ resource "helm_release" "spot_termination_handler" {
   repository = var.spot_termination_handler_chart_repo
   version    = var.spot_termination_handler_chart_version
   namespace  = var.spot_termination_handler_chart_namespace
-  recreate_pods = true
-  force_update = true
 }
 
 # add spot fleet Autoscaling policy

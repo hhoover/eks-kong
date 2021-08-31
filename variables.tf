@@ -19,7 +19,7 @@ variable "name_prefix" {
 # VPC Variables
 variable "vpc_cidr" {
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "10.120.0.0/16"
   description = "Base CIDR block to be used in our VPC."
 }
 
@@ -49,7 +49,7 @@ variable "cluster_name" {
 
 variable "asg_instance_types" {
   type        = list(string)
-  default     = ["m6i.large", "m6i.xlarge"]
+  default     = ["m5.large", "m6i.large", "m6i.xlarge"]
   description = "List of EC2 instance machine types to be used in EKS."
 }
 
