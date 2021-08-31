@@ -44,4 +44,4 @@ spec:
           type: file
           conf:
             path: /dev/stdout
-            address: loki.kuma-logging:3100
+            address: loki.kong-mesh-logging:3100
