@@ -49,7 +49,7 @@ variable "cluster_name" {
 
 variable "asg_instance_types" {
   type        = list(string)
-  default     = ["m5.large", "m6i.large", "m6i.xlarge"]
+  default     = ["m5.large", "m5.xlarge"]
   description = "List of EC2 instance machine types to be used in EKS."
 }
 
