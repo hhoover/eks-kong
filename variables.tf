@@ -55,13 +55,13 @@ variable "asg_instance_types" {
 
 variable "autoscaling_minimum_size_by_az" {
   type        = number
-  default     = 1
+  default     = 2
   description = "Minimum number of EC2 instances to autoscale our EKS cluster on each AZ."
 }
 
 variable "autoscaling_maximum_size_by_az" {
   type        = number
-  default     = 3
+  default     = 4
   description = "Maximum number of EC2 instances to autoscale our EKS cluster on each AZ."
 }
 

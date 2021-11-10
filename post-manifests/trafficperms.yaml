@@ -43,7 +43,7 @@ spec:
       kuma.io/service: "grafana_kong-mesh-metrics_svc_80"
    destinations:
    - match:
-      kuma.io/service: "jaeger-query_kuma-tracing_svc_80"
+      kuma.io/service: "jaeger-query_kong-mesh-tracing_svc_80"
 ---
 apiVersion: kuma.io/v1alpha1
 kind: TrafficPermission
@@ -56,4 +56,4 @@ spec:
       kuma.io/service: "*"
    destinations:
    - match:
-      kuma.io/service: "jaeger-agent_kuma-tracing_svc_5778"
+      kuma.io/service: "jaeger-agent_kong-mesh-tracing_svc_5778"

@@ -36,7 +36,7 @@ spec:
       type: zipkin
       sampling: 100.0
       conf:
-        url: http://jaeger-collector.kuma-tracing:9411/api/v2/spans
+        url: http://jaeger-collector.kong-mesh-tracing:9411/api/v2/spans
   logging:
       defaultBackend: loki
       backends:
