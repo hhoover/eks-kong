@@ -123,6 +123,12 @@ provider "helm" {
   }
 }
 
+resource "aws_iam_openid_connect_provider" "cluster" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = []
+  url             = data.aws_eks_cluster.cluster.identity.0.oidc.0.issuer
+}
+
 # deploy spot termination handler
 resource "helm_release" "spot_termination_handler" {
   name       = var.spot_termination_handler_chart_name
