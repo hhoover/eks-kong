@@ -95,6 +95,10 @@ resource "helm_release" "kong_gateway" {
     name  = "proxy.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-backend-protocol"
     value = "http"
   }
+  set {
+    name  = "proxy.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-cross-zone-load-balancing-enabled"
+    value = "true"
+  }
 }
 
 data "kubernetes_service" "kong_gateway" {
@@ -105,9 +109,9 @@ data "kubernetes_service" "kong_gateway" {
   depends_on = [module.eks-cluster]
 }
 
-resource "aws_route53_record" "gateway_proxy" {
+resource "aws_route53_record" "kong_wildcard" {
   zone_id = data.aws_route53_zone.eks_domain.zone_id
-  name    = "kong"
+  name    = "*.${var.dns_base_domain}"
   type    = "CNAME"
   records = [data.kubernetes_service.kong_gateway.status.0.load_balancer.0.ingress.0.hostname]
   ttl     = 60
@@ -140,11 +144,11 @@ resource "kubernetes_secret" "kong-mesh-license" {
 }
 
 resource "helm_release" "kong_mesh" {
-  name       = var.kong_mesh_release_name
-  repository = var.kong_mesh_chart_repo
-  chart      = var.kong_mesh_chart_name
-  namespace  = kubernetes_namespace.kong-mesh-system.metadata[0].name
-  values = [
-      file("${path.module}/mesh/kong-mesh-values.yaml")
-    ]
+ name       = var.kong_mesh_release_name
+ repository = var.kong_mesh_chart_repo
+ chart      = var.kong_mesh_chart_name
+ namespace  = kubernetes_namespace.kong-mesh-system.metadata[0].name
+ values = [
+     file("${path.module}/mesh/kong-mesh-values.yaml")
+   ]
 }
