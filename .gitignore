@@ -10,3 +10,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 *license.json
+post-manifests/ingress.yaml
+gateway/*_conf
