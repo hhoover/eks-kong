@@ -1,8 +1,9 @@
 image:
   repository: kong/kong-gateway
-  tag: "2.5.1.0-alpine"
+  tag: "2.6.0.0-alpine"
 podAnnotations:
   kuma.io/gateway: enabled
+replicaCount: 1
 env:
   database: "off"
 enterprise:
