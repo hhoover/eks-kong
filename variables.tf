@@ -49,7 +49,7 @@ variable "cluster_name" {
 
 variable "asg_instance_types" {
   type        = list(string)
-  default     = ["m5.large", "m5.xlarge"]
+  default     = ["m6i.2xlarge", "m6i.xlarge"]
   description = "List of EC2 instance machine types to be used in EKS."
 }
 
@@ -67,7 +67,7 @@ variable "autoscaling_maximum_size_by_az" {
 
 variable "autoscaling_average_cpu" {
   type        = number
-  default     = 30
+  default     = 60
   description = "Average CPU threshold to autoscale EKS EC2 instances."
 }
 
@@ -85,7 +85,7 @@ variable "spot_termination_handler_chart_repo" {
 
 variable "spot_termination_handler_chart_version" {
   type        = string
-  default     = "0.15.2"
+  default     = "0.16.0"
   description = "EKS Spot termination handler Helm chart version."
 }
 
