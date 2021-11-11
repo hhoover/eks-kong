@@ -79,6 +79,7 @@ resource "helm_release" "kong_gateway" {
   name      = var.kong_gateway_release_name
   chart     = var.kong_gateway_chart_name
   namespace = kubernetes_namespace.kong.metadata[0].name
+  depends_on = [helm_release.kong_mesh]
 
   values = [
     file("${path.module}/gateway/kong-gateway-values.yaml")
