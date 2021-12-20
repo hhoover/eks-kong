@@ -4,12 +4,13 @@ kuma:
   global:
     image:
       registry: "docker.io/kong"
-      tag: "1.4.1"
+      tag: "1.5.1"
 
   controlPlane:
     envVars: {"KUMA_REPORTS_ENABLED": "false"}
     image:
       repository: "kuma-cp"
+    replicas: 2
     secrets:
       - Env: "KMESH_LICENSE_INLINE"
         Secret: "kong-mesh-license"

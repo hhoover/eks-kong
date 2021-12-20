@@ -225,7 +225,7 @@ data:
         access: proxy
         editable: true
         uid: jaeger
-        url: http://jaeger-query.kuma-tracing
+        url: http://jaeger-query.kong-mesh-tracing
         jsonData:
           tracesToLogs:
             datasourceUid: loki
