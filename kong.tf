@@ -89,6 +89,10 @@ resource "helm_release" "kong_gateway" {
     value = aws_acm_certificate.eks_domain_cert.arn
   }
   set {
+    name  = "proxy.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+    value = "elb"
+  }
+  set {
     name  = "proxy.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-ports"
     value = "kong-proxy-tls"
   }
