@@ -4,6 +4,8 @@ Terraform it up. Creates a VPC, EKS (with spot), and configures an ACM on a load
 
 Also included: some post-terraform Kube manifests in `./post-manifests` to add observability and mTLS.
 
+This project's code is not supported by Kong, Inc., (me) Hart Hoover, or anyone else.
+
 ## Requirements
 
 Assumes a Kong enterprise `license.json` file in `./gateway` and `./mesh` - you'll need two licenses (one for Gateway and one for Mesh)
@@ -33,8 +35,9 @@ You'll need a domain that exists in Route53.
 | [aws_acm_certificate_validation.eks_domain_cert_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
 | [aws_autoscaling_policy.eks_autoscaling_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy) | resource |
 | [aws_eip.nat_gw_elastic_ip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_iam_openid_connect_provider.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
 | [aws_route53_record.domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_record.gateway_proxy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.kong_wildcard](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [helm_release.kong_gateway](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.kong_mesh](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.spot_termination_handler](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
@@ -54,14 +57,14 @@ You'll need a domain that exists in Route53.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | Tags to apply to every resource | `map(string)` | <pre>{<br>  "user": "email@konghq.com"<br>}</pre> | no |
-| <a name="input_asg_instance_types"></a> [asg\_instance\_types](#input\_asg\_instance\_types) | List of EC2 instance machine types to be used in EKS. | `list(string)` | <pre>[<br>  "m5.large",<br>  "m6i.large",<br>  "m6i.xlarge"<br>]</pre> | no |
-| <a name="input_autoscaling_average_cpu"></a> [autoscaling\_average\_cpu](#input\_autoscaling\_average\_cpu) | Average CPU threshold to autoscale EKS EC2 instances. | `number` | `30` | no |
-| <a name="input_autoscaling_maximum_size_by_az"></a> [autoscaling\_maximum\_size\_by\_az](#input\_autoscaling\_maximum\_size\_by\_az) | Maximum number of EC2 instances to autoscale our EKS cluster on each AZ. | `number` | `3` | no |
-| <a name="input_autoscaling_minimum_size_by_az"></a> [autoscaling\_minimum\_size\_by\_az](#input\_autoscaling\_minimum\_size\_by\_az) | Minimum number of EC2 instances to autoscale our EKS cluster on each AZ. | `number` | `1` | no |
+| <a name="input_asg_instance_types"></a> [asg\_instance\_types](#input\_asg\_instance\_types) | List of EC2 instance machine types to be used in EKS. | `list(string)` | <pre>[<br>  "m6i.2xlarge",<br>  "m6i.xlarge"<br>]</pre> | no |
+| <a name="input_autoscaling_average_cpu"></a> [autoscaling\_average\_cpu](#input\_autoscaling\_average\_cpu) | Average CPU threshold to autoscale EKS EC2 instances. | `number` | `60` | no |
+| <a name="input_autoscaling_maximum_size_by_az"></a> [autoscaling\_maximum\_size\_by\_az](#input\_autoscaling\_maximum\_size\_by\_az) | Maximum number of EC2 instances to autoscale our EKS cluster on each AZ. | `number` | `4` | no |
+| <a name="input_autoscaling_minimum_size_by_az"></a> [autoscaling\_minimum\_size\_by\_az](#input\_autoscaling\_minimum\_size\_by\_az) | Minimum number of EC2 instances to autoscale our EKS cluster on each AZ. | `number` | `2` | no |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS profile to use from local AWS credentials file | `string` | `"default"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the EKS Cluster | `string` | `"dev"` | no |
 | <a name="input_dns_base_domain"></a> [dns\_base\_domain](#input\_dns\_base\_domain) | DNS Zone name to be used for EKS Ingress. | `string` | n/a | yes |
-| <a name="input_kong_gateway_chart_name"></a> [kong\_gateway\_chart\_name](#input\_kong\_gateway\_chart\_name) | Ingress Gateway Helm chart name. | `string` | `"https://github.com/Kong/charts/releases/download/kong-2.3.0/kong-2.3.0.tgz"` | no |
+| <a name="input_kong_gateway_chart_name"></a> [kong\_gateway\_chart\_name](#input\_kong\_gateway\_chart\_name) | Ingress Gateway Helm chart name. | `string` | `"https://github.com/Kong/charts/releases/download/kong-2.6.3/kong-2.6.3.tgz"` | no |
 | <a name="input_kong_gateway_release_name"></a> [kong\_gateway\_release\_name](#input\_kong\_gateway\_release\_name) | Ingress Gateway Helm chart name. | `string` | `"kong"` | no |
 | <a name="input_kong_mesh_chart_name"></a> [kong\_mesh\_chart\_name](#input\_kong\_mesh\_chart\_name) | Kong Mesh Helm chart name. | `string` | `"kong-mesh"` | no |
 | <a name="input_kong_mesh_chart_repo"></a> [kong\_mesh\_chart\_repo](#input\_kong\_mesh\_chart\_repo) | Kong Mesh Helm repository name. | `string` | `"https://kong.github.io/kong-mesh-charts"` | no |
@@ -72,7 +75,7 @@ You'll need a domain that exists in Route53.
 | <a name="input_spot_termination_handler_chart_name"></a> [spot\_termination\_handler\_chart\_name](#input\_spot\_termination\_handler\_chart\_name) | EKS Spot termination handler Helm chart name. | `string` | `"aws-node-termination-handler"` | no |
 | <a name="input_spot_termination_handler_chart_namespace"></a> [spot\_termination\_handler\_chart\_namespace](#input\_spot\_termination\_handler\_chart\_namespace) | Kubernetes namespace to deploy EKS Spot termination handler Helm chart. | `string` | `"kube-system"` | no |
 | <a name="input_spot_termination_handler_chart_repo"></a> [spot\_termination\_handler\_chart\_repo](#input\_spot\_termination\_handler\_chart\_repo) | EKS Spot termination handler Helm repository name. | `string` | `"https://aws.github.io/eks-charts"` | no |
-| <a name="input_spot_termination_handler_chart_version"></a> [spot\_termination\_handler\_chart\_version](#input\_spot\_termination\_handler\_chart\_version) | EKS Spot termination handler Helm chart version. | `string` | `"0.15.2"` | no |
+| <a name="input_spot_termination_handler_chart_version"></a> [spot\_termination\_handler\_chart\_version](#input\_spot\_termination\_handler\_chart\_version) | EKS Spot termination handler Helm chart version. | `string` | `"0.16.0"` | no |
 | <a name="input_subnet_prefix_extension"></a> [subnet\_prefix\_extension](#input\_subnet\_prefix\_extension) | CIDR block bits extension to calculate CIDR blocks of each subnetwork. | `number` | `4` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | Base CIDR block to be used in our VPC. | `string` | `"10.120.0.0/16"` | no |
 | <a name="input_zone_offset"></a> [zone\_offset](#input\_zone\_offset) | CIDR block bits extension offset to calculate Public subnets, avoiding collisions with Private subnets. | `number` | `8` | no |
